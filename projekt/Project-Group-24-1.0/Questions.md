@@ -1,0 +1,1 @@
+## tiden/datumen i URL baseras på unixtime, vi har funktioner som kan få fram det, men detta sker inom IO. Finns det något fiffigt sätt att få dagens datum i ett "rent" format, så att vi kan sedan köra scrapeURL med URL ++ tiden som input (med typ String)? Känns inte helt rätt att behöva uppdatera dagens datum/tid varje dag för att koden skall fungera som planerat.

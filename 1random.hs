@@ -1,4 +1,9 @@
 import Data.List
+--Note that you must derive (Eq) to derive (Ord).
+
+
+
+
 circleArea :: Double -> Double
 circleArea 0 = 0
 circleArea r | r < 0 = error "negative length"
@@ -455,3 +460,81 @@ nonsenseAux (x:xs) | x >= 10 = fib 10
 nonsenseFun' :: [Int] -> Int
 nonsenseFun' [] = 0
 nonsenseFun' (x:xs) = nonsenseAux (reverseIntList' (x:xs) [])
+
+
+
+data FailableDouble = Failure
+                    | OK Double
+  deriving Show
+
+safeDiv :: Double -> Double -> FailableDouble
+safeDiv _ 0 = Failure
+safeDiv x y = OK (x / y)
+
+
+squares :: [Integer] -> [Integer]
+squares xs = [x*x | x <- xs]
+
+squaresRec :: [Integer] -> [Integer]
+squaresRec [] = []
+squaresRec (x:xs) = x*x : squaresRec xs
+
+
+{-
+Division in terms of subtraction
+returns the (count, rest)
+-}
+dividedBy :: Integral a => a -> a -> (a, a)
+dividedBy numerator denominator = go numerator denominator 0
+    where go num denom count
+            | num < denom = (count, num)
+            | otherwise = go (num - denom) denom (count+1)
+
+
+describeList :: [a] -> String  
+describeList xs = "The list is " ++ what xs  
+    where what [] = "empty."  
+          what [x] = "a singleton list."  
+          what xs = "a longer list."  
+
+ 
+calcBmis :: (RealFloat a) => [(a, a)] -> [a]  
+calcBmis xs = [bmi | (w, h) <- xs, let bmi = w / h ^ 2]  
+--ex: calcBmis [(150, 1.88)] ==> 42.4
+
+
+--mycket bra exempel på tail recursion
+areverse :: [a] -> [a]
+areverse list =
+    let rev [] rp = rp
+        rev (x:xs) rp = rev xs (x:rp)
+    in
+        rev list []
+
+
+data Price        = Price Integer deriving(Eq, Show)
+data Manufacturer = Mini | Mazda | Tata deriving(Eq, Show)
+data Airline      = PapuAir | CatapultsR'Us | TakeYourChancesUnited deriving(Eq, Show)
+data Vehicle      = Car Manufacturer Price | Plane Airline deriving(Eq, Show)
+
+
+myCar
+ = Car Mini (Price 14000)
+urCar
+ = Car Mazda (Price 20000)
+clownCar = Car Tata (Price 7000)
+doge = Plane PapuAir
+
+isCar :: Vehicle -> Bool
+isCar (Car _ _) = True
+isCar _ = False
+
+
+isPlane :: Vehicle -> Bool
+isPlane = undefined
+areCars :: [Vehicle] -> [Bool]
+areCars = undefined
+
+
+getManu :: Vehicle -> Manufacturer
+getManu = undefined
